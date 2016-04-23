@@ -11,8 +11,15 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
+app.use('/css', express.static('css'));
+app.use('/scripts', express.static('scripts'));
+
 app.get('/', function (req, res) {
     res.render('index');
+});
+
+app.post('/api/measurements', function (req, res) {
+    var json = req.body;
 });
 
 app.listen(config.port, function () {
