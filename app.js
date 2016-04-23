@@ -33,10 +33,6 @@ app.get('/', function (req, res) {
     res.render('index');
 });
 
-app.get('/test', function (req, res) {
-    res.render('index2', {defaultLayout: 'main2'});
-});
-
 app.post('/api/measurements', function (req, res) {
     var data = JSON.parse(req.body);
     for (var i = 0; i < data.measurements.length; i++) {
