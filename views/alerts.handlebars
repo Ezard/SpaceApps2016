@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alerts</title>
+    <script> src="../scripts/bootstrap.js"</script>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+    div.message {
+        position: relative;
+        left: 4.25vw;
+        width: 85vw;
+        padding: 15px 20px 15px 15px;
+        border-radius: 10px;
+        margin: 0 0 20px;
+    }
+
+    div.message i:before {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+</style>
+
+</head>
+<body>
+<div class="page">
+    <div class="container-fluid center-block">
+        <h2 class="text-center">Witty Project Name Here</h2>
+    </div>
+    <div class="container-fluid center-block">
+        <h1 class="text-center">Air Alerts</h1>
+    </div>
+
+    <div id="messages" class="messages">
+    </div>
+
+    <script type="text/javascript">
+        setTimeout(function () {
+            createMessage("Avoid going down Field Lane due to high carbon monoxide levels", "warning");
+        }, 2000);
+        setTimeout(function () {
+            createMessage("Sudden increase in asthma detected near Piccadilly Circus", "error");
+        }, 5000);
+
+        function createMessage(message, type) {
+            document.getElementById("messages").innerHTML += "<div class=\"message " + type + "\">" + message + "<i class=\"fa fa-times\" aria-hidden=\"true\" onclick=\"deleteMessage(this.parentNode)\"></i></div>";
+        }
+
+        function deleteMessage(element) {
+            element.parentNode.removeChild(element);
+        }
+
+
+
+    </script>
+    
+</div>
+</body>
+</html>
