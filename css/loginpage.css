@@ -1,0 +1,18 @@
+.inputbox{
+    width: 500px;
+}
+
+.button{
+    width: 200px;
+    text-align: center;
+}
+
+#mainloginpage{
+    margin-top: 100px;
+}
+
+body {
+    background-repeat:no-repeat;
+    background-image:url(../images/bamboo2.jpg);
+    background-size:cover;
+}
