@@ -156,7 +156,7 @@
         <div id="pollen"></div>
         <div id="air_quality"></div>
         <div id="carbon_monoxide"></div>
-        <div id="smoke"></div>
+        <div id="humidity"></div>
         <div id="temperature"></div>
     </div>
 
@@ -190,7 +190,7 @@
                 pollen: 20,
                 air_quality: 20,
                 carbon_monoxide: 90,
-                smoke: 50,
+                humidity: 50,
                 temperature: 75
             };
 
@@ -214,11 +214,11 @@
             options.percent = percentage.carbon_monoxide;
             options.icon = "f1b9";
             $("#carbon_monoxide").circliful(options);
-            options.text = "Smoke";
-            options.foregroundColor = getColour(percentage.smoke);
-            options.percent = percentage.smoke;
-            options.icon = "f06d";
-            $("#smoke").circliful(options);
+            options.text = "Humidity";
+            options.foregroundColor = getColour(percentage.humidity);
+            options.percent = percentage.humidity;
+            options.icon = "f043";
+            $("#humidity").circliful(options);
             options.text = "Temperature";
             options.foregroundColor = getColour(percentage.temperature);
             options.percent = percentage.temperature;
@@ -231,6 +231,11 @@
             setTimeout(function () {
                 createMessage("Sudden increase in asthma detected near Piccadilly Circus", "error");
             }, 5000);
+
+            $(".svg-container").on("click", function()
+            {   
+                window.location = "/map/"+this.id;
+            });
         });
 
         function getColour(val) {
