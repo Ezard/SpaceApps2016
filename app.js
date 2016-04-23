@@ -6,7 +6,7 @@ var config = require('./config');
 
 var con = mysql.createConnection({
     host: 'localhost',
-    user: 'runciman',
+    user: 'root',
     password: 'runciman',
     database: 'spaceapps'
 });
