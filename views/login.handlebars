@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Screen</title>
-    <script> src="../scripts/bootstrap.js"</script>
+    <script> src = "../scripts/bootstrap.js"</script>
     <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../css/loginpage.css" rel="stylesheet" type="text/css">
     <link href="../bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet" type="text/css">
     <link href="../css/loginpage.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <div id = "mainloginpage">
+<div id="mainloginpage">
     <div class="container-fluid center-block">
         <h1 class="text-center">Login</h1>
     </div>
@@ -26,17 +26,19 @@
     <div>
         <h2 class="text-center">Don't have an account?</h2>
     </div>
-    <div class="btn btn-primary center-block btn-lg button">
-        <h2>Sign up</h2>
-    </div>
+    <a href="/signup">
+        <div class="btn btn-primary center-block btn-lg button">
+            <h2>Sign up</h2>
+        </div>
+    </a>
     <div>
         <h2 class="text-center">Or</h2>
     </div>
     <a class="btn btn-block btn-social btn-facebook button center-block">
         <span class="fa fa-facebook">
-            <img src="../images/facebook-icon.png" style="width: 32px; height: 32px">
+            <!--<img src="../images/facebook-icon.png" style="width: 32px; height: 32px">-->
         </span> Sign in with Facebook
     </a>
-    </div>
+</div>
 </body>
 </html>

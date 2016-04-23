@@ -8,15 +8,41 @@ var yorky = -1.030851; //not for girls
 var map, heatmap;
 
 function initheatMap() {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
         center: {lat: yorkx, lng: yorky},
         mapTypeId: google.maps.MapTypeId.SATELLITE
     });
+    directionsDisplay.setMap(map);
 
     heatmap = new google.maps.visualization.HeatmapLayer({
         data: getPoints(),
         map: map
+    });
+
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
+
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+    directionsService.route({
+        origin: new google.maps.LatLng(yorkx, yorky),
+        destination: new google.maps.LatLng(yorkx, yorky + 0.1),
+        waypoints: [
+            {location: new google.maps.LatLng(yorkx + 0.5, yorky),stopover: false},
+            {location: new google.maps.LatLng(yorkx + 0.5, yorky + 0.2),stopover: false},
+            {location: new google.maps.LatLng(yorkx + 0.2, yorky + 0.4),stopover: false},
+            {location: new google.maps.LatLng(yorkx, yorky + 0.3),stopover: false}
+        ],
+        travelMode: google.maps.TravelMode.DRIVING
+    }, function(response, status) {
+        if (status === google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+        } else {
+            window.alert('Directions request failed due to ' + status);
+        }
     });
 }
 
@@ -42,7 +68,9 @@ function changeGradient() {
 
 function getPoints() {
     getSensorData();
-    return drawCircle();
+    var points = drawCircle();
+    points.push.apply(addCluster(yorkx, yorky));
+    return points;
 }
 
 function getSensorData() {
@@ -51,11 +79,25 @@ function getSensorData() {
             url: "/testjohnsjson"
         })
         .success(function( msg ) {
-            alert("swag");
-            alert( "Data Saved: " + msg );
+            // alert("swag");
+            // alert( "Data Saved: " + msg );
         }).fail(function() {
         alert("yolo");
     });
+}
+
+function addCluster(lat, lng){
+    var points = [];
+    var radius = 0.01
+
+    for (var i = 0; i < 10000; i++){
+        points.push({location: new google.maps.LatLng(lat + Math.floor(Math.random() * 5) - 2.5,
+            lng + Math.floor(Math.random() * 5) - 2.5), weight: Math.floor(Math.random() * 5000000)})
+    }
+
+    alert(points);
+
+    return points;
 }
 
 function drawCircle() {
