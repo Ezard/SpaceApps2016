@@ -7,12 +7,21 @@
     text-align: center;
 }
 
-#mainloginpage{
-    margin-top: 100px;
+#page{
+    margin-top: 30px;
+    text-align: center;
 }
 
 body {
     background-repeat:no-repeat;
     background-image:url(../images/bamboo2.jpg);
-    background-size:cover;
+}
+
+.form-control{
+    width:70%;
+}
+
+.btn-allergy
+{
+    margin-bottom: 15px;
 }
