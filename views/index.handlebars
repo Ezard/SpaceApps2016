@@ -1,108 +1,107 @@
-<div class = "background-image">
+<div class="background-image">
 </div>
 <div class="container">
 
     <div class="row">
-        <div class="col-md-4 col-xs-4">
-
-
-                <div id="temperature" class="center-block circle">
-                    <!--<div style="position:absolute; left:0; top:0; width:100px; height:100px; background-color:red"></div>-->
-
+        <div class="col-md-4 col-xs-6">
+            <div id="temperature" class="center-block circle">
+                <!--<div style="position:absolute; left:0; top:0; width:100px; height:100px; background-color:red"></div>-->
             </div>
 
         </div>
-        <div class="col-md-4 col-xs-4">
+        <div class="col-md-4 col-xs-6">
 
             <div id="airquality" class="center-block circle"></div>
 
 
         </div>
-        <div class="col-md-4 col-xs-4">
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-xs-6">
 
             <div id="carbonmon" class="center-block circle"></div>
 
 
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-4 col-xs-4">
+        <div class="col-md-4 col-xs-6">
 
             <div id="methane" class="center-block circle"></div>
 
         </div>
-        <div class="col-md-4 col-xs-4">
-            <div id="pollen" class="center-block circle"></div>
-
-        </div>
-        <div class="col-md-4 col-xs-4">
-
-            <div id="smoke" class="center-block circle"></div>
-
-        </div>
     </div>
-    
-</div>
+        <div class="row">
+            <div class="col-md-4 col-xs-6">
+                <div id="pollen" class="center-block circle"></div>
 
-<script>
-    var options = {
-        animationStep: 5,
-        foregroundBorderWidth: 5,
-        backgroundBorderWidth: 5,
-        icon: 'f0a0',
-        text: "Temperature"
-    };
-    $(document).ready(function () {
-        var percentage = {
-            methane: 10,
-            pollen: 20,
-            airquality: 20,
-            carbonmon: 90,
-            smoke: 50,
-            temperature: 75
+            </div>
+            <div class="col-md-4 col-xs-6">
+
+                <div id="smoke" class="center-block circle"></div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        var options = {
+            animationStep: 5,
+            foregroundBorderWidth: 5,
+            backgroundBorderWidth: 5,
+            icon: 'f0a0',
+            text: "Temperature"
+        };
+        $(document).ready(function () {
+            var percentage = {
+                methane: 10,
+                pollen: 20,
+                airquality: 20,
+                carbonmon: 90,
+                smoke: 50,
+                temperature: 75
+            }
+
+            options.text = "Methane";
+            options.foregroundColor = getColour(percentage.methane);
+            options.percent = percentage.methane;
+            $("#methane").circliful(options);
+            options.text = "Pollen";
+            options.foregroundColor = getColour(percentage.pollen);
+            options.percent = percentage.pollen;
+            $("#pollen").circliful(options);
+            options.text = "Air Quality";
+            options.foregroundColor = getColour(percentage.airquality);
+            options.percent = percentage.airquality;
+            $("#airquality").circliful(options);
+            options.text = "CO";
+            options.foregroundColor = getColour(percentage.carbonmon);
+            options.percent = percentage.carbonmon;
+            $("#carbonmon").circliful(options);
+            options.text = "Smoke";
+            options.foregroundColor = getColour(percentage.smoke);
+            options.percent = percentage.smoke;
+            $("#smoke").circliful(options);
+            options.text = "Temperature";
+            options.foregroundColor = getColour(percentage.temperature);
+            options.percent = percentage.temperature;
+            $("#temperature").circliful(options);
+
+        });
+
+        function getColour(val) {
+            if (val <= 25) {
+                return "#2ecc71";
+            }
+            else if (val <= 50) {
+                return "#f1c40f"
+            }
+            else if (val <= 75) {
+                return "#e67e22"
+            }
+            else if (val <= 100) {
+                return "#F22613"
+            }
         }
 
-        options.text = "Methane";
-        options.foregroundColor = getColour(percentage.methane);
-        options.percent = percentage.methane;
-        $("#methane").circliful(options);
-        options.text = "Pollen";
-        options.foregroundColor = getColour(percentage.pollen);
-        options.percent = percentage.pollen;
-        $("#pollen").circliful(options);
-        options.text = "Air Quality";
-        options.foregroundColor = getColour(percentage.airquality);
-        options.percent = percentage.airquality;
-        $("#airquality").circliful(options);
-        options.text = "CO";
-        options.foregroundColor = getColour(percentage.carbonmon);
-        options.percent = percentage.carbonmon;
-        $("#carbonmon").circliful(options);
-        options.text = "Smoke";
-        options.foregroundColor = getColour(percentage.smoke);
-        options.percent = percentage.smoke;
-        $("#smoke").circliful(options);
-        options.text = "Temperature";
-        options.foregroundColor = getColour(percentage.temperature);
-        options.percent = percentage.temperature;
-        $("#temperature").circliful(options);
-
-    });
-
-    function getColour(val) {
-        if (val <= 25) {
-            return "#2ecc71";
-        }
-        else if (val<=50){
-            return "#f1c40f"
-        }
-        else if (val<=75){
-            return "#e67e22"
-        }
-        else if (val<=100){
-            return "#F22613"
-        }
-    }
-
-</script>
+    </script>
