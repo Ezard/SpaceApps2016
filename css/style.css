@@ -1,0 +1,24 @@
+.background-image{
+    background-image: url("https://lh3.googleusercontent.com/-8eUqJ_DBiHY/VgJMi4aDwPI/AAAAAAAAADQ/k8j4MwG-ERE/w1920-h1080/nature-wallpaper-gif11801-creek-waterfalls-1920x1080-nature-wallpapergif-x7pi00o2.gif");
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+    width:105%;
+    height:105%;
+    position: fixed;
+    background-size:cover;
+    left: 0;
+    right: 0;
+    }
+
+.padding{
+    padding: 10px;
+    margin: 10px;
+}
+.circle {
+    width: 100%;
+    height:100%;
+    z-index: 1;
+}
