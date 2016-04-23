@@ -1,6 +1,7 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
 var mysql = require('mysql');
+var bodyParser = require('body-parser');
 
 var config = require('./config');
 
@@ -22,6 +23,8 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
+app.use(bodyParser.urlencoded());
+
 app.use('/css', express.static('css'));
 app.use('/images', express.static('images'));
 app.use('/scripts', express.static('scripts'));
@@ -31,7 +34,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/api/measurements', function (req, res) {
-    var data = JSON.parse(req.query.data);
+    var data = JSON.parse(req.body);
     for (var i = 0; i < data.measurements.length; i++) {
         var sql = mysql.format("INSERT INTO measurements(timestamp, longitude, latitude, type, value) VALUES(?, ?, ?, (SELECT id FROM measurement_types WHERE name=?), ?);", [data.timestamp, data.longitude, data.latitude, data.measurements[i].type, data.measurements[i].value]);
         con.query(sql, function (error, results, fields) {
@@ -42,7 +45,6 @@ app.post('/api/measurements', function (req, res) {
 });
 
 app.get('/api/measurements/:type', function (req, res) {
-    res.send(req.query.centre + ", " + req.query.radius);
     if (req.query.centre && req.query.radius) {
         var centre = JSON.parse(req.query.centre);
 
