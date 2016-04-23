@@ -11,3 +11,10 @@
     line-height: 30px;
     padding-left: 10px;
 }
+
+#map{
+    width: 50%;
+    height: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
