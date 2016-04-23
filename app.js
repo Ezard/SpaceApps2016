@@ -23,6 +23,7 @@ app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
 app.use('/css', express.static('css'));
+app.use('/images', express.static('images'));
 app.use('/scripts', express.static('scripts'));
 
 app.get('/', function (req, res) {
