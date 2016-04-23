@@ -1,19 +1,19 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
-var mysql = require('mysql');
+// var mysql = require('mysql');
 var bodyParser = require('body-parser');
 
 var config = require('./config');
 
-var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'runciman',
-    database: 'spaceapps'
-});
-setTimeout(function () {
-    con.connect();
-}, 1000);
+// var con = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'runciman',
+//     database: 'spaceapps'
+// // });
+// setTimeout(function () {
+//     con.connect();
+// }, 1000);
 
 var app = express();
 
@@ -23,7 +23,7 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
-app.use(bodyParser.urlencoded());
+// app.use(bodyParser.urlencoded());
 
 app.use('/css', express.static('css'));
 app.use('/images', express.static('images'));
