@@ -1,7 +1,18 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
+var mysql = require('mysql');
 
 var config = require('./config');
+
+var con = mysql.createConnection({
+    host: 'localhost',
+    user: 'runciman',
+    password: 'runciman',
+    database: 'spaceapps'
+});
+setTimeout(function () {
+    con.connect();
+}, 1000);
 
 var app = express();
 
