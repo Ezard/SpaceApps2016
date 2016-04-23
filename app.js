@@ -1,7 +1,18 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
+var mysql = require('mysql');
 
 var config = require('./config');
+
+var con = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'runciman',
+    database: 'spaceapps'
+});
+setTimeout(function () {
+    con.connect();
+}, 1000);
 
 var app = express();
 
@@ -19,7 +30,15 @@ app.get('/', function (req, res) {
 });
 
 app.post('/api/measurements', function (req, res) {
-    var json = req.body;
+    console.log(req.query.data);
+    var data = JSON.parse(req.query.data);
+    for (var i = 0; i < data.measurements.length; i++) {
+        var sql = mysql.format("INSERT INTO measurements(timestamp, longitude, latitude, type, value) VALUES(?, ?, ?, (SELECT id FROM measurement_types WHERE name=?), ?);", [data.timestamp, data.longitude, data.latitude, data.measurements[i].type, data.measurements[i].value]);
+        con.query(sql, function (error, results, fields) {
+            console.log(error);
+        });
+    }
+    res.end();
 });
 
 app.listen(config.port, function () {
