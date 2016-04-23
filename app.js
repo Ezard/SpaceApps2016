@@ -34,7 +34,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/api/measurements', function (req, res) {
-    var data = JSON.parse(req.body);
+    var data = req.body;
     for (var i = 0; i < data.measurements.length; i++) {
         var sql = mysql.format("INSERT INTO measurements(timestamp, longitude, latitude, type, value) VALUES(?, ?, ?, (SELECT id FROM measurement_types WHERE name=?), ?);", [data.timestamp, data.longitude, data.latitude, data.measurements[i].type, data.measurements[i].value]);
         con.query(sql, function (error, results, fields) {
