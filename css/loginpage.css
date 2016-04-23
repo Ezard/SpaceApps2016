@@ -9,10 +9,14 @@
 
 #mainloginpage{
     margin-top: 100px;
+    text-align: center;
 }
 
 body {
     background-repeat:no-repeat;
     background-image:url(../images/bamboo2.jpg);
-    background-size:cover;
+}
+
+.form-control{
+    width:70%;
 }
