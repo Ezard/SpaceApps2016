@@ -73,8 +73,8 @@
         <div id="temperature"></div>
     </div>
 
-    <div class="message warning">Avoid going down Field Lane due to high carbon monoxide levels</div>
-    <div class="message error">Sudden increase in asthma detected near Piccadilly Circus</div>
+    <div id="messages" class="messages">
+    </div>
 
     <script>
         var options = {
@@ -126,6 +126,12 @@
             options.icon = "f0e9";
             $("#temperature").circliful(options);
 
+            setTimeout(function () {
+                createMessage("Avoid going down Field Lane due to high carbon monoxide levels", "warning");
+            }, 2000);
+            setTimeout(function () {
+//                createMessage("Sudden increase in asthma detected near Piccadilly Circus", "error");
+            }, 5000);
         });
 
         function getColour(val) {
@@ -141,6 +147,14 @@
             else if (val <= 100) {
                 return "#F22613"
             }
+        }
+
+        function createMessage(message, type) {
+            document.getElementById("messages").innerHTML += "<div class=\"message " + type + "\" onclick=\"deleteMessage(this)\">" + message + "</div>";
+        }
+
+        function deleteMessage(element) {
+            element.parentNode.removeChild(element);
         }
     </script>
 </div>
