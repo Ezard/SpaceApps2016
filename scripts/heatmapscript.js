@@ -69,7 +69,8 @@ function changeGradient() {
 function getPoints() {
     getSensorData();
     var points = drawCircle();
-    points.push.apply(addCluster(yorkx, yorky));
+    points.push.apply(points, addCluster(51.510051, -0.134488));
+    alert(points.length);
     return points;
 }
 
@@ -88,11 +89,15 @@ function getSensorData() {
 
 function addCluster(lat, lng){
     var points = [];
-    var radius = 0.01
+    var radius = 0.01;
+    var x, y;
 
-    for (var i = 0; i < 10000; i++){
-        points.push({location: new google.maps.LatLng(lat + Math.floor(Math.random() * 5) - 2.5,
-            lng + Math.floor(Math.random() * 5) - 2.5), weight: Math.floor(Math.random() * 5000000)})
+    for (var i = 0; i < 100; i++){
+        points.push({location: new google.maps.LatLng(lat + (Math.random() * radius) - (radius/2),
+            lng + (Math.random() * radius * 2) - (radius/2)), weight: (Math.random() * 1000000000)})
+        x = (yorkx + radius * (Math.random() * 100) * Math.cos(2 * Math.PI * 3 *i / Math.random()));
+        y = (yorky + (radius * 2 * (Math.random() * 100)) * Math.sin(2 * Math.PI * 3 * i / Math.random()));
+        points.push({location: new google.maps.LatLng(x, y), weight: i*i*i})
     }
 
     alert(points);
