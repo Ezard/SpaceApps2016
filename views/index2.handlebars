@@ -1,26 +1,53 @@
-<div>
+<div class="outer_container">
     <style scoped>
+        div.outer_container {
+            min-height: 100vh;
+            background-image: url('/images/download.gif');
+            background-size: cover;
+        }
+
         div.circles {
             position: relative;
-            width: 1400px;
+            padding: 0 calc((100% - 1400px) / 2);
             margin: auto;
         }
 
         div.circles div {
-            float: left;
+            display: inline-block;
             position: relative;
             width: 30%;
             margin-left: 2.5%;
             overflow: hidden;
         }
 
+        div.message {
+            position: relative;
+            width: 90%;
+            margin: auto;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        div.warning {
+            color: #8a6d3b;
+            background-color: #fcf8e3;
+            border: 1px solid #faebcc;
+        }
+
+        div.error {
+            color: #a94442;
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+        }
+
         @media screen and (max-width: 500px) {
             div.circles {
-                width: 90%;
+                width: 100%;
+                padding: 0 5%;
             }
 
             div.circles div {
-                width: 50%;
+                width: 49%;
                 margin-left: 0;
             }
 
@@ -41,6 +68,9 @@
         <div id="temperature"></div>
     </div>
 
+    <div class="message warning">Avoid going down Field Lane due to high carbon monoxide levels</div>
+    <div class="message error">Sudden increase in asthma detected near Piccadilly Circus</div>
+
     <script>
         var options = {
             animationStep: 5,
@@ -48,7 +78,7 @@
             backgroundBorderWidth: 5,
             icon: 'f0a0',
             text: "Temperature",
-            textColor: "#000"
+            textColor: "#fff"
         };
         $(document).ready(function () {
             var percentage = {
@@ -63,7 +93,7 @@
             options.text = "Methane";
             options.foregroundColor = getColour(percentage.methane);
             options.percent = percentage.methane;
-            options.icon = "f18c";
+            options.icon = "f0c2";
             $("#methane").circliful(options);
             options.text = "Pollen";
             options.foregroundColor = getColour(percentage.pollen);
@@ -88,7 +118,7 @@
             options.text = "Temperature";
             options.foregroundColor = getColour(percentage.temperature);
             options.percent = percentage.temperature;
-            options.icon = "f18c";
+            options.icon = "f0e9";
             $("#temperature").circliful(options);
 
         });
