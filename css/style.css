@@ -1,8 +1,7 @@
-div > .background-image{
+.background-image{
     background-image: url('../images/download.gif');
     width:105%;
     height:105%;
-    position: fixed;
     background-size:cover;
     left: -2.5%;
     top: -2.5%;

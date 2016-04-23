@@ -40,6 +40,15 @@
 
             </div>
         </div>
+        <div class="alert alert-warning">
+            .alert.alert-warning
+            <a class="alert-link" href="#">a.alert-link</a>
+        </div>
+
+        <div class="alert alert-danger">
+            .alert.alert-danger
+            <a class="alert-link" href="#">a.alert-link</a>
+        </div>
     </div>
 
 </div>
@@ -53,7 +62,7 @@
 
         if (window.mobilecheck() == true) {
             var newHeight = $(window).height() + 70;
-            $("#background").css("height", newHeight);
+            $(".background-image").css("height", newHeight);
         }
         var options = {
             animationStep: 5,
