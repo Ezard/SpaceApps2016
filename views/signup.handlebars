@@ -3,32 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign up</title>
-    <script> src="../js/bootstrap.js"</script>
+    <script> src="../scripts/bootstrap.js"</script>
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/loginpage.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div class="form-group inputbox center-block">
-    <label for="usr">Name:</label>
-    <input type="text" class="form-control" id="usr">
+<div class="page">
+    <div class="container-fluid center-block text-center">
+        <h2>Witty Project Name Here</h2>
+    </div>
+    <div class="container-fluid center-block">
+        <h1 class="text-center">Sign Up</h1>
+    </div>
+
+    <div class="form-group center-block text-center">
+        <label for="usr">Name</label>
+        <input type="text" class="form-control center-block" id="usr">
+    </div>
+    <div class="form-group center-block text-center">
+        <label for="pwd">Password</label>
+        <input type="password" class="form-control center-block" id="pwd">
+    </div>
+    <div class="form-group center-block text-center">
+        <label for="pwdtwo">Confirm password</label>
+        <input type="password" class="form-control center-block" id="pwdtwo">
+    </div>
+
+    <h4 class="text-center" style="margin-top:50px;">Please select any health problems you have that are affected by air pollutants</h4>
+    
+    <div class="btn btn-allergy btn-default center-block button">
+        Hayfever
+    </div>
+    <div class="btn btn-allergy btn-default center-block button">
+        Lung Diseases
+    </div>
+    <div class="btn btn-allergy btn-default center-block button">
+        Heart Conditions
+    </div>
+    <div class="btn btn-allergy btn-default center-block button">
+        Asthma
+    </div>
+    <div class="btn btn-allergy btn-default center-block button">
+        Respiratory Diseases
+    </div>
+    <div class="btn btn-allergy btn-default center-block button">
+        Cancer
+    </div>
+
 </div>
-<div class="form-group inputbox center-block">
-    <label for="pwd">Password:</label>
-    <input type="password" class="form-control" id="pwd">
-</div>
-<div class="form-group inputbox center-block">
-    <label for="pwdtwo">Confirm password:</label>
-    <input type="password" class="form-control" id="pwdtwo">
-</div>
-<h2 class="text-center">What allergies do you have?</h2>
-<div class="btn btn-default center-block button">
-    pollen
-</div>
-<div class="btn btn-default center-block button">
-    dust
-</div>
-<div class="btn btn-default center-block button">
-    smoke
-</div>
+<script type="text/javascript">
+    $(".btn-allergy").on("click", function()
+    {
+        $(this).toggleClass("active");
+    });
+</script>
 </body>
 </html>

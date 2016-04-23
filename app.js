@@ -37,6 +37,10 @@ app.get('/login', function (req, res) {
     res.render('login');
 });
 
+app.get('/signup', function (req, res) {
+    res.render('signup');
+});
+
 app.post('/api/measurements', function (req, res) {
     var data = req.body;
     for (var i = 0; i < data.measurements.length; i++) {
