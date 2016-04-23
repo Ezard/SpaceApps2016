@@ -1,6 +1,8 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
 
+var config = require('./config');
+
 var app = express();
 
 app.engine('handlebars', exphbs({
@@ -13,5 +15,5 @@ app.get('/', function (req, res) {
     res.render('index');
 });
 
-app.listen(2048, function () {
+app.listen(config.port, function () {
 });
