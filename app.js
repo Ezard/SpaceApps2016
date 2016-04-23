@@ -23,7 +23,7 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
 
 app.use('/css', express.static('css'));
 app.use('/images', express.static('images'));
