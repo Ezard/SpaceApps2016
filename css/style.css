@@ -1,5 +1,5 @@
 .background-image{
-    width:100%;
+    width:105%;
     height:105%;
     background-size:cover;
     left: -2.5%;
@@ -29,13 +29,13 @@ html, body {
     /*padding-left: 0;*/
 /*}*/
 
-.circliful{
-    width: 110%;
-    height: 130%;
-    left: -15%;
-    top: -15%;
-    position: relative;
-}
+/*.circliful{*/
+    /*width: 110%;*/
+    /*height: 130%;*/
+    /*left: -15%;*/
+    /*top: -15%;*/
+    /*position: relative;*/
+/*}*/
 
 /*.circliful{*/
     /*width: 100%;*/
