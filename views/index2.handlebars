@@ -1,0 +1,91 @@
+<div>
+    <style scoped>
+        div.circles{
+            width: 100vw;
+        }
+        div.circles div{
+            float: left;
+            position: relative;
+            left: 10%;
+            width: 20%;
+        }
+    </style>
+
+    <div class="circles">
+        <div id="methane"></div>
+        <div id="pollen"></div>
+        <div id="air_quality"></div>
+        <div id="carbon_monoxide"></div>
+        <div id="smoke"></div>
+        <div id="temperature"></div>
+    </div>
+
+    <script>
+        var options = {
+            animationStep: 5,
+            foregroundBorderWidth: 5,
+            backgroundBorderWidth: 5,
+            icon: 'f0a0',
+            text: "Temperature",
+            textColor: "#FFFFFF"
+        };
+        $(document).ready(function () {
+            var percentage = {
+                methane: 10,
+                pollen: 20,
+                air_quality: 20,
+                carbon_monoxide: 90,
+                smoke: 50,
+                temperature: 75
+
+            };
+
+            options.text = "Methane";
+            options.foregroundColor = getColour(percentage.methane);
+            options.percent = percentage.methane;
+            options.icon = "f18c";
+            $("#methane").circliful(options);
+            options.text = "Pollen";
+            options.foregroundColor = getColour(percentage.pollen);
+            options.percent = percentage.pollen;
+            options.icon = "f18c";
+            $("#pollen").circliful(options);
+            options.text = "Air Quality";
+            options.foregroundColor = getColour(percentage.air_quality);
+            options.percent = percentage.air_quality;
+            options.icon = "f299";
+            $("#air_quality").circliful(options);
+            options.text = "CO";
+            options.foregroundColor = getColour(percentage.carbon_monoxide);
+            options.percent = percentage.carbon_monoxide;
+            options.icon = "f1b9";
+            $("#carbon_monoxide").circliful(options);
+            options.text = "Smoke";
+            options.foregroundColor = getColour(percentage.smoke);
+            options.percent = percentage.smoke;
+            options.icon = "f06d";
+            $("#smoke").circliful(options);
+            options.text = "Temperature";
+            options.foregroundColor = getColour(percentage.temperature);
+            options.percent = percentage.temperature;
+            options.icon = "f18c";
+            $("#temperature").circliful(options);
+
+        });
+
+        function getColour(val) {
+            if (val <= 25) {
+                return "#2ecc71";
+            }
+            else if (val <= 50) {
+                return "#f1c40f"
+            }
+            else if (val <= 75) {
+                return "#e67e22"
+            }
+            else if (val <= 100) {
+                return "#F22613"
+            }
+        }
+    </script>
+</div>
