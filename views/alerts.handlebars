@@ -22,6 +22,23 @@
         right: 10px;
         cursor: pointer;
     }
+
+    div.warning {
+        color: #8a6d3b;
+        background-color: #fcf8e3;
+        border: 1px solid #faebcc;
+    }
+
+    div.error {
+        color: #a94442;
+        background-color: #f2dede;
+        border: 1px solid #ebccd1;
+    }
+    
+    body {
+        background-repeat:no-repeat;
+        background-image:url(../images/bamboo2.jpg);
+    }
 </style>
 
 </head>
@@ -39,11 +56,18 @@
 
     <script type="text/javascript">
         setTimeout(function () {
-            createMessage("Avoid going down Field Lane due to high carbon monoxide levels", "warning");
+            createMessage("Avoid Field Lane, due to high carbon monoxide levels", "warning");
         }, 2000);
         setTimeout(function () {
             createMessage("Sudden increase in asthma detected near Piccadilly Circus", "error");
         }, 5000);
+        setTimeout(function () {
+            createMessage("High pollen readings around Heslington. Since you suffer from Hayfever, you may want to avoid the area if you can.", "error");
+        }, 6000);
+
+        setTimeout(function () {
+            createMessage("Unusual Methane readings around York Science Park. You should try to avoid the area due to your known health issue.", "error");
+        }, 9000);
 
         function createMessage(message, type) {
             document.getElementById("messages").innerHTML += "<div class=\"message " + type + "\">" + message + "<i class=\"fa fa-times\" aria-hidden=\"true\" onclick=\"deleteMessage(this.parentNode)\"></i></div>";
