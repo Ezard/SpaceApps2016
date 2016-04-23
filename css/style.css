@@ -26,13 +26,13 @@ div > .background-image{
     padding-left: 0;
 }
 
-/*.circliful{*/
-    /*width: 130%;*/
-    /*height: 130%;*/
-    /*left: -15%;*/
-    /*top: -15%;*/
-    /*position: relative;*/
-/*}*/
+.circliful{
+    width: 130%;
+    height: 130%;
+    left: -15%;
+    top: -15%;
+    position: relative;
+}
 
 /*.circliful{*/
     /*width: 100%;*/
