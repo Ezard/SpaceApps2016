@@ -271,5 +271,9 @@
             document.body.webkitRequestFullScreen();
             element.parentNode.removeChild(element);
         }
+
+        setTimeout(function() {
+            window.location.reload();
+        }, 5000);
     </script>
 </div>
