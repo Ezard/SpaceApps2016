@@ -211,7 +211,7 @@
             $("#pollen").circliful(options);
             options.text = "Air Quality";
             options.foregroundColor = getColour(percentage.air_quality);
-            options.percent = percentage.air_quality;
+            options.percent = {{air_quality}};
             options.icon = "f299";
             $("#air_quality").circliful(options);
             options.text = "CO";
