@@ -221,7 +221,7 @@
             $("#carbon_monoxide").circliful(options);
             options.text = "Humidity";
             options.foregroundColor = getColour(({{humidity}} / 1023) * 100);
-            options.percent = ({{humidity}} / 1023) * 100;
+            options.percent = {{humidity}};
             options.icon = "f043";
             $("#humidity").circliful(options);
             options.text = "Temperature";
