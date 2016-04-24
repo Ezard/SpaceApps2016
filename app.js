@@ -45,7 +45,7 @@ app.get('/', function (req, res) {
     {
         return "SELECT timestamp, latitude, longitude, value FROM measurements m LEFT JOIN measurement_types mt ON m.type=mt.id WHERE name=? AND latitude != 0 AND longitude != 0 AND type="+type;
     }
-    var sql = mysql.format(getSql("METHANE"), [req.params.type.toUpperCase()]);
+    var sql = mysql.format(getSql("METHANE"));
     con.query(sql, function (error, results, fields) {
             res.render('index', {data: JSON.stringify(results)});
         });
