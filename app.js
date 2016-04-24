@@ -41,6 +41,13 @@ app.get('/signup', function (req, res) {
     res.render('signup');
 });
 
+app.get('/alerts', function (req, res) {
+    res.render('alerts');
+
+app.get('/symptoms', function (req, res) {
+    res.render('symptoms');
+});
+
 app.post('/api/measurements', function (req, res) {
     var data = req.body;
     for (var i = 0; i < data.measurements.length; i++) {

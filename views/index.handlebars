@@ -168,6 +168,7 @@
             <div><i class="fa fa-plus" aria-hidden="true"></i></div>
         </a>
         <a href="/alerts">
+            <div style="position:fixed; right:0; background-color: red; line-height:28px; text-align: center; color: white; height:30px; width:30px; border-radius:30px;">4</div>
             <div><i class="fa fa-envelope" aria-hidden="true"></i></div>
         </a>
     </div>
@@ -225,12 +226,12 @@
             options.icon = "f0e9";
             $("#temperature").circliful(options);
 
-            setTimeout(function () {
+            /*setTimeout(function () {
                 createMessage("Avoid going down Field Lane due to high carbon monoxide levels", "warning");
             }, 2000);
             setTimeout(function () {
                 createMessage("Sudden increase in asthma detected near Piccadilly Circus", "error");
-            }, 5000);
+            }, 5000);*/
 
             $(".svg-container").on("click", function()
             {   
@@ -254,7 +255,7 @@
         }
 
         function createMessage(message, type) {
-            //document.getElementById("messages").innerHTML += "<div class=\"message " + type + "\">" + message + "<i class=\"fa fa-times\" aria-hidden=\"true\" onclick=\"deleteMessage(this.parentNode)\"></i></div>";
+            document.getElementById("messages").innerHTML += "<div class=\"message " + type + "\">" + message + "<i class=\"fa fa-times\" aria-hidden=\"true\" onclick=\"deleteMessage(this.parentNode)\"></i></div>";
         }
 
         function deleteMessage(element) {

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alerts</title>
+    <script src="../scripts/bootstrap.js"> </script>
+    <script src="../scripts/typed.js"></script>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+    div.message {
+        position: relative;
+        left: 4.25vw;
+        width: 85vw;
+        padding: 15px 20px 15px 15px;
+        border-radius: 10px;
+        margin: 0 0 20px;
+    }
+
+    div.message i:before {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    div.warning {
+        color: #8a6d3b;
+        background-color: #fcf8e3;
+        border: 1px solid #faebcc;
+    }
+
+    div.error {
+        color: #a94442;
+        background-color: #f2dede;
+        border: 1px solid #ebccd1;
+    }
+
+    div.tweet {
+        color: #00aced;
+        background-color: #c0deed;
+        border: 1px solid #0084b4;
+    }
+    
+    body {
+        background-repeat:no-repeat;
+        background-image:url(../images/bamboo2.jpg);
+    }
+
+    .typed-cursor{
+        visibility: collapse;
+        opacity: 0;
+    }
+</style>
+
+</head>
+<body>
+<div class="page">
+    <div class="container-fluid center-block">
+        <h2 class="text-center">Witty Project Name Here</h2>
+    </div>
+    <div class="container-fluid center-block">
+        <h1 class="text-center">Air Alerts</h1>
+    </div>
+
+    <div id="messages" class="container-fluid messages">
+    </div>
+    
+    <div class="container-fluid center-block text-center">
+    <div class="form-group" style="position:fixed; bottom:0; width:90%;">
+        <textarea type="text" style="position: fixed;right:26px;width:90%;bottom:65px;" class="form-control center-block text-center container-fluid" id="tweet"></textarea>
+        <a href="#">
+            <div class="btn center-block button">
+                <h4>Tweet AirLert</h4>
+            </div>
+        </a>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+        setTimeout(function () {
+            createMessage("Avoid Field Lane, due to high carbon monoxide levels", "warning");
+        }, 2000);
+        setTimeout(function () {
+            createMessage("High pollen readings around Heslington. Since you suffer from Hayfever, you may want to avoid the area if you can.", "error");
+        }, 5000);
+
+        setTimeout(function () {
+            createMessage("Unusual Methane readings around York Science Park. You should try to avoid the area due to your known health issue.", "error");
+        }, 7000);
+
+        setTimeout(function () {
+            $("#tweet").typed({
+        strings: ["My asthma is really flairing up today!^700 Must be the factory nearby again! :(^500 #AirLert"],
+        typeSpeed: 0
+      });   
+        }, 9500);
+
+        setTimeout(function () {
+            $("#tweet").html("");
+            createMessage("My asthma is really flairing up today! Must be the factory nearby again! :( #AirLert", "tweet");
+        }, 15000);
+                
+
+
+        function createMessage(message, type) {
+            document.getElementById("messages").innerHTML += "<div class=\"message " + type + "\">" + message + "<i class=\"fa fa-times\" aria-hidden=\"true\" onclick=\"deleteMessage(this.parentNode)\"></i></div>";
+        }
+
+        function deleteMessage(element) {
+            element.parentNode.removeChild(element);
+        }
+
+
+
+    </script>
+    
+</div>
+</body>
+</html>
