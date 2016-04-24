@@ -43,7 +43,7 @@ app.use('/scripts', express.static('scripts'));
 app.get('/', function (req, res) {
     con.query("SELECT value as methane FROM measurements WHERE type=1 ORDER BY timestamp DESC LIMIT 1", function (error, results, fields) {
         con.query("SELECT value as carbon_monoxide FROM measurements WHERE type=1 ORDER BY timestamp DESC LIMIT 1", function (error2, results2, fields2) {
-            con.query("SELECT value as air_quality FROM measurements type=1 ORDER BY timestamp DESC LIMIT 1", function (error3, results3, fields3) {
+            con.query("SELECT value as air_quality FROM measurements WHERE type=1 ORDER BY timestamp DESC LIMIT 1", function (error3, results3, fields3) {
                 con.query("SELECT value as temperature FROM measurements WHERE type=1 ORDER BY timestamp DESC LIMIT 1", function (error4, results4, fields4) {
                     con.query("SELECT value as humidity FROM measurements WHERE type=1 ORDER BY timestamp DESC LIMIT 1", function (error5, results5, fields5) {
                         console.log(error);
