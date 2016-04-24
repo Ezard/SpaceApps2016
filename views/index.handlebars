@@ -8,6 +8,7 @@
 
         div.circles {
             position: relative;
+            width: 1400px;
             padding: 0 calc((100% - 1400px) / 2);
             margin: auto;
         }
@@ -176,6 +177,8 @@
     <div id="messages" class="messages">
     </div>
 
+    <button style="position:fixed; top:0; left:0" onclick="fullscreen(this)">Fullscreen</button>
+
     <script>
         var options = {
             animationStep: 5,
@@ -259,6 +262,11 @@
         }
 
         function deleteMessage(element) {
+            element.parentNode.removeChild(element);
+        }
+
+        function fullscreen(element) {
+            document.body.webkitRequestFullScreen();
             element.parentNode.removeChild(element);
         }
     </script>

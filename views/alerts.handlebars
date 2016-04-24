@@ -64,7 +64,7 @@
         <h1 class="text-center">Air Alerts</h1>
     </div>
 
-    <div id="messages" class="container-fluid messages">
+    <div id="messages" class="pre-scrollable container-fluid messages">
     </div>
     
     <div class="container-fluid center-block text-center">
@@ -100,6 +100,7 @@
         setTimeout(function () {
             $("#tweet").html("");
             createMessage("My asthma is really flairing up today! Must be the factory nearby again! :( #AirLert", "tweet");
+            $(".messages").scrollTop(1E10)
         }, 15000);
                 
 
