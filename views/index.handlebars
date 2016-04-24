@@ -201,7 +201,7 @@
 
             options.text = "Methane";
             options.foregroundColor = getColour(percentage.methane);
-            options.percent = {{methane}};
+            options.percent = {{methane}} / 1023;
             options.icon = "f0c2";
             $("#methane").circliful(options);
             options.text = "Pollen";
@@ -211,22 +211,22 @@
             $("#pollen").circliful(options);
             options.text = "Air Quality";
             options.foregroundColor = getColour(percentage.air_quality);
-            options.percent = {{air_quality}};
+            options.percent = {{air_quality}} / 1023;
             options.icon = "f299";
             $("#air_quality").circliful(options);
             options.text = "CO";
             options.foregroundColor = getColour(percentage.carbon_monoxide);
-            options.percent = percentage.carbon_monoxide;
+            options.percent = {{carbon_monoxide}} / 1023;
             options.icon = "f1b9";
             $("#carbon_monoxide").circliful(options);
             options.text = "Humidity";
             options.foregroundColor = getColour(percentage.humidity);
-            options.percent = percentage.humidity;
+            options.percent = {{humidity}} / 1023;
             options.icon = "f043";
             $("#humidity").circliful(options);
             options.text = "Temperature";
             options.foregroundColor = getColour(percentage.temperature);
-            options.percent = percentage.temperature;
+            options.percent = {{temperature}};
             options.icon = "f0e9";
             options.unit = "°C";
             $("#temperature").circliful(options);
