@@ -8,6 +8,7 @@ var yorky = -1.030851; //not for girls
 //blackfriars bridge
 var bbx = 51.509759;
 var bby = -0.104490;
+
 var map, heatmap;
 var toDeleteMarker = null;
 var startMarker = null;
@@ -19,7 +20,7 @@ function initheatMap() {
     var directionsDisplay = new google.maps.DirectionsRenderer;
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
-        center: {lat: yorkx, lng: yorky},
+        center: {lat: bbx, lng: bby},
         mapTypeId: google.maps.MapTypeId.SATELLITE
     });
     directionsDisplay.setMap(map);
@@ -30,7 +31,7 @@ function initheatMap() {
     });
 
     startMarker = new google.maps.Marker({
-        position: new google.maps.LatLng(yorkx, yorky),
+        position: new google.maps.LatLng(bbx, bby),
         map: map,
         draggable: true
     });
@@ -62,26 +63,15 @@ function initheatMap() {
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-    directionsService.route({
-        origin: startMarker.getPosition(),
-        destination: endMarker.getPosition(),
-        waypoints: calculateWaypoints(startMarker.getPosition(), endMarker.getPosition()),
-        travelMode: google.maps.TravelMode.WALKING
-    }, function(response, status) {
-        if (status === google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);
-        } else {
-            window.alert('Directions request failed due to ' + status);
-        }
-    });
+    calculateWaypoints(startMarker.getPosition(), endMarker.getPosition(), directionsService, directionsDisplay);
 }
 
-function calculateWaypoints(start, end){
+function calculateWaypoints(start, end, directionsService, directionsDisplay){
     var lngDistance = start.lng() - end.lng();
     var latDistance = start.lat() - end.lat();
     var distance = Math.sqrt((latDistance*latDistance) + (lngDistance*lngDistance));
-    alert(distance);
-    var steps = Math.min(8, Math.floor(5/distance));
+    var steps = Math.min(8, Math.floor(distance/0.025));
+    console.log(steps);
     var waypointsAbove = [];
     var waypointsBelow = [];
     var waypointsAboveDistance = 0;
@@ -89,8 +79,8 @@ function calculateWaypoints(start, end){
     var threshold = 0.01;
     for (var i = 0; i < steps; i++){
 
-        var newLngAbove = start.lng() - (lngDistance * 1.5 * i/steps);
-        var newLatAbove = start.lat() - (latDistance * 1.5 * i/steps);
+        var newLngAbove = start.lng() - (lngDistance * 1 * i/steps);
+        var newLatAbove = start.lat() - (latDistance * 1 * i/steps);
         var newLngBelow = newLngAbove;
         var newLatBelow = newLatBelow;
 
@@ -133,6 +123,7 @@ function calculateWaypoints(start, end){
         waypointsBelow.push({location: new google.maps.LatLng(newLatBelow, newLngBelow),stopover: false})
     }
 
+    // alert(waypointsAbove.length + " " + waypointsBelow.length);
     var snapRequest = "https://roads.googleapis.com/v1/snapToRoads?path=";
 
     for (i = 0; i < waypointsAbove.length; i++){
@@ -143,23 +134,37 @@ function calculateWaypoints(start, end){
         }
     }
     snapRequest += "&interpolate=true&key=AIzaSyAwveoqN8yTd5-6N1XfgcSZ8R1g_P8YOdw";
-    alert(snapRequest);
 
     $.ajax({
             method: "GET",
             url: snapRequest
         })
         .success(function( msg ) {
-            alert(JSON.stringify(msg));
+            // alert(JSON.stringify(msg));
             for (var i = 0; i < msg.snappedPoints.length; i++){
-                waypointsAbove[i] = msg.snappedPoints.location;
+                waypointsAbove[i] = {location: new google.maps.LatLng(msg.snappedPoints[i].location.latitude,
+                    msg.snappedPoints[i].location.longitude),stopover: false};
+                // alert(JSON.stringify(msg.snappedPoints[i].location))
             }
+            var options = {
+                origin: startMarker.getPosition(),
+                destination: endMarker.getPosition(),
+                travelMode: google.maps.TravelMode.WALKING
+            }
+            if(!waypointsAbove.length==0){
+                options.waypoints = waypointsAbove;
+            }
+            directionsService.route(options, function(response, status) {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                } else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
         }).fail(function() {
         alert("error");
     });
 
-    alert(waypointsAbove.length);
-    alert(waypointsBelow.length);
     return waypointsAbove;
 }
 
@@ -184,25 +189,22 @@ function changeGradient() {
 }
 
 function getPoints() {
-    getSensorData();
+    // getSensorData();
     var points = drawCircle();
     points.push.apply(points, addCluster(51.510051, -0.134488));
     pointsGlobal = points;
     return points;
 }
 
-function getSensorData() {
-    $.ajax({
-            method: "GET",
-            url: "/testjohnsjson"
-        })
-        .success(function( msg ) {
-            // alert("swag");
-            // alert( "Data Saved: " + msg );
-        }).fail(function() {
-        alert("yolo");
-    });
-}
+// function getSensorData() {
+//     $.ajax({
+//             method: "GET",
+//             url: "/testjohnsjson"
+//         })
+//         .success(function( msg ) {
+//         }).fail(function() {
+//     });
+// }
 
 function addCluster(lat, lng){
     var points = [];
@@ -212,9 +214,9 @@ function addCluster(lat, lng){
     for (var i = 0; i < 100; i++){
         points.push({location: new google.maps.LatLng(lat + (Math.random() * radius) - (radius/2),
             lng + (Math.random() * radius * 2) - (radius/2)), weight: (Math.random() * 1000000000)})
-        x = (yorkx + radius * (Math.random() * 100) * Math.cos(2 * Math.PI * 3 *i / Math.random()));
-        y = (yorky + (radius * 2 * (Math.random() * 100)) * Math.sin(2 * Math.PI * 3 * i / Math.random()));
-        points.push({location: new google.maps.LatLng(x, y), weight: i*i*i})
+        // x = (yorkx + radius * (Math.random() * 100) * Math.cos(2 * Math.PI * 3 *i / Math.random()));
+        // y = (yorky + (radius * 2 * (Math.random() * 100)) * Math.sin(2 * Math.PI * 3 * i / Math.random()));
+        // points.push({location: new google.maps.LatLng(x, y), weight: i*i*i})
     }
     pointsGlobal = points;
     return points;
@@ -247,8 +249,12 @@ $("#coButton").click(function () {
 $("#methaneButton").click(function () {
     map.setCenter(new google.maps.LatLng(bbx, bby), 5);
     heatmap.setMap(null);
+    var points = [];
+    points.push.apply(points, addCluster(bbx, bby));
+    points.push.apply(points, addCluster(bbx + 0.01, bby + 0.02));
+    points.push.apply(points, addCluster(bbx - 0.01, bby - 0.01));
     heatmap = new google.maps.visualization.HeatmapLayer({
-        data: addCluster(bbx, bby),
+        data: points,
         map: map
     });
 });
