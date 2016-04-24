@@ -46,19 +46,15 @@ app.get('/', function (req, res) {
             con.query("SELECT value as air_quality FROM measurements WHERE type=3 ORDER BY timestamp DESC LIMIT 1", function (error3, results3, fields3) {
                 con.query("SELECT value as temperature FROM measurements WHERE type=4 ORDER BY timestamp DESC LIMIT 1", function (error4, results4, fields4) {
                     con.query("SELECT value as humidity FROM measurements WHERE type=5 ORDER BY timestamp DESC LIMIT 1", function (error5, results5, fields5) {
-                        console.log("here");
-                        console.log(results);
-                        console.log(results2);
-                        console.log(results3);
-                        console.log(results4);
-                        console.log(results5);
-                        res.render('index', {
+                        var obj = {
                             methane: results.methane,
                             carbon_monoxide: results2.carbon_monoxide,
                             air_quality: results3.air_quality,
                             temperature: results4.temperature,
                             humidity: results5.humidity
-                        });
+                        };
+                        console.log(obj);
+                        res.render('index', obj);
                     });
                 });
             });
