@@ -42,22 +42,19 @@ app.use('/scripts', express.static('scripts'));
 
 app.get('/', function (req, res) {
     con.query("SELECT value as methane FROM measurements WHERE type=1 ORDER BY timestamp DESC LIMIT 1", function (error, results, fields) {
-        con.query("SELECT value as carbon_monoxide FROM measurements WHERE type=1 ORDER BY timestamp DESC LIMIT 1", function (error2, results2, fields2) {
-            con.query("SELECT value as air_quality FROM measurements WHERE type=1 ORDER BY timestamp DESC LIMIT 1", function (error3, results3, fields3) {
-                con.query("SELECT value as temperature FROM measurements WHERE type=1 ORDER BY timestamp DESC LIMIT 1", function (error4, results4, fields4) {
-                    con.query("SELECT value as humidity FROM measurements WHERE type=1 ORDER BY timestamp DESC LIMIT 1", function (error5, results5, fields5) {
-                        console.log(results);
-                        console.log(results2);
-                        console.log(results3);
-                        console.log(results4);
-                        console.log(results5);
-                        res.render('index', {
-                            methane: results.methane,
-                            carbon_monoxide: results2.carbon_monoxide,
-                            air_quality: results3.air_quality,
-                            temperature: results4.temperature,
-                            humidity: results5.humidity
-                        });
+        con.query("SELECT value as carbon_monoxide FROM measurements WHERE type=2 ORDER BY timestamp DESC LIMIT 1", function (error2, results2, fields2) {
+            con.query("SELECT value as air_quality FROM measurements WHERE type=3 ORDER BY timestamp DESC LIMIT 1", function (error3, results3, fields3) {
+                con.query("SELECT value as temperature FROM measurements WHERE type=4 ORDER BY timestamp DESC LIMIT 1", function (error4, results4, fields4) {
+                    con.query("SELECT value as humidity FROM measurements WHERE type=5 ORDER BY timestamp DESC LIMIT 1", function (error5, results5, fields5) {
+                        var obj = {
+                            methane: results[0].methane,
+                            carbon_monoxide: results2[0].carbon_monoxide,
+                            air_quality: results3[0].air_quality,
+                            temperature: results4[0].temperature,
+                            humidity: results5[0].humidity
+                        };
+                        console.log(obj);
+                        res.render('index', obj);
                     });
                 });
             });
@@ -101,7 +98,7 @@ app.post('/api/measurements', function (req, res) {
     for (var i = 0; i < data.measurements.length; i++) {
         var sql = mysql.format("INSERT INTO measurements(timestamp, longitude, latitude, type, value) VALUES(?, ?, ?, (SELECT id FROM measurement_types WHERE name=?), ?);", [data.timestamp, data.longitude, data.latitude, data.measurements[i].type, data.measurements[i].value]);
         con.query(sql, function (error, results, fields) {
-            console.log(error);
+            // console.log(error);
         });
     }
     res.end();
