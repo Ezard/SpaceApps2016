@@ -106,12 +106,12 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
 
         for (var j = 0; j < pointsGlobal.length; j++){
             var h = pointsGlobal[j].location;
-            var hLngDistance = h.lng() - newLngAbove;
-            var hLatDistance = h.lat() - newLatAbove;
+            var hLngDistance = Math.abs(h.lng() - newLngAbove);
+            var hLatDistance = Math.abs(h.lat() - newLatAbove);
             var hDistance = Math.sqrt((hLatDistance*hLatDistance) + (hLngDistance*hLngDistance));
             if (hDistance < threshold){
                 // newLng += Math.random() - 0.0005;
-                if (lngDistance < latDistance || true) {
+                if (lngDistance < latDistance) {
                     newLatAbove += increment;
                     console.log("push sideways");
                 }
@@ -125,12 +125,12 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
 
         for (j = 0; j < pointsGlobal.length; j++){
             h = pointsGlobal[j].location;
-            hLngDistance = h.lng() - newLngBelow;
-            hLatDistance = h.lat() - newLatBelow;
+            hLngDistance = Math.abs(h.lng() - newLngBelow);
+            hLatDistance = Math.abs(h.lat() - newLatBelow);
             hDistance = Math.sqrt((hLatDistance*hLatDistance) + (hLngDistance*hLngDistance));
             if (hDistance < threshold){
                 // newLng += Math.random() - 0.0005;
-                if (lngDistance < latDistance || true) {
+                if (lngDistance < latDistance) {
                     newLatBelow -= increment;
                     console.log("push sideways");
                 }
