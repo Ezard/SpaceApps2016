@@ -102,7 +102,7 @@ app.post('/api/measurements', function (req, res) {
     for (var i = 0; i < data.measurements.length; i++) {
         var sql = mysql.format("INSERT INTO measurements(timestamp, longitude, latitude, type, value) VALUES(?, ?, ?, (SELECT id FROM measurement_types WHERE name=?), ?);", [data.timestamp, data.longitude, data.latitude, data.measurements[i].type, data.measurements[i].value]);
         con.query(sql, function (error, results, fields) {
-            console.log(error);
+            // console.log(error);
         });
     }
     res.end();
