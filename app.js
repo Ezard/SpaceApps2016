@@ -21,11 +21,12 @@ if (DATABASE_ENABLE)
         password: 'runciman',
         database: 'spaceapps'
     });
-}
 
-setTimeout(function () {
-    con.connect();
-}, 1000);*/
+
+    setTimeout(function () {
+        con.connect();
+    }, 1000);
+}
 
 var app = express();
 
