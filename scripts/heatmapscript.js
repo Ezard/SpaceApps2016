@@ -9,7 +9,9 @@ var yorky = -1.030851; //not for girls
 var bbx = 51.509759;
 var bby = -0.104490;
 
-var map, heatmap;
+var sensorMultiplier = 1000000;
+
+var map, heatmap, heatmaptwo;
 var toDeleteMarker = null;
 var startMarker = null;
 var endMarker = null;
@@ -29,6 +31,13 @@ function initheatMap() {
         data: getPoints(),
         map: map
     });
+
+    heatmaptwo = new google.maps.visualization.HeatmapLayer({
+        data: [],
+        map: map
+    });
+
+    changeGradient();
 
     startMarker = new google.maps.Marker({
         position: new google.maps.LatLng(bbx, bby),
@@ -244,23 +253,36 @@ function calculateDistance(lat1, lat2, lng1, lng2){
 }
 
 function changeGradient() {
-    var gradient = [
-        'rgba(0, 255, 255, 0)',
-        'rgba(0, 255, 255, 1)',
-        'rgba(0, 191, 255, 1)',
-        'rgba(0, 127, 255, 1)',
-        'rgba(0, 63, 255, 1)',
-        'rgba(0, 0, 255, 1)',
-        'rgba(0, 0, 223, 1)',
-        'rgba(0, 0, 191, 1)',
-        'rgba(0, 0, 159, 1)',
-        'rgba(0, 0, 127, 1)',
-        'rgba(63, 0, 91, 1)',
-        'rgba(127, 0, 63, 1)',
-        'rgba(191, 0, 31, 1)',
+    // var gradient = [
+    //     'rgba(0, 255, 255, 0)',
+    //     'rgba(0, 255, 255, 1)',
+    //     'rgba(0, 191, 255, 1)',
+    //     'rgba(0, 127, 255, 1)',
+    //     'rgba(0, 63, 255, 1)',
+    //     'rgba(0, 0, 255, 1)',
+    //     'rgba(0, 0, 223, 1)',
+    //     'rgba(0, 0, 191, 1)',
+    //     'rgba(0, 0, 159, 1)',
+    //     'rgba(0, 0, 127, 1)',
+    //     'rgba(63, 0, 91, 1)',
+    //     'rgba(127, 0, 63, 1)',
+    //     'rgba(191, 0, 31, 1)',
+    //     'rgba(255, 0, 0, 1)'
+    // ]
+    var gradientGreen = [
+        'rgba(0, 255, 0, 0)',
+        'rgba(0, 255, 0, 0)',
+        'rgba(0, 255, 0, 1)',
         'rgba(255, 0, 0, 1)'
-    ]
-    heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+    ];
+    var gradientRed = [
+        'rgba(0, 255, 0, 0)',
+        'rgba(0, 255, 0, 0)',
+        'rgba(0, 255, 0, 1)',
+        'rgba(255, 0, 0, 1)'
+    ];
+    // heatmap.set('gradient', heatmap.get('gradient') ? null : gradientGreen);
+    heatmaptwo.set('gradient', heatmap.get('gradient') ? null : gradientRed);
 }
 
 function getPoints() {
@@ -288,7 +310,7 @@ function addCluster(lat, lng){
 
     for (var i = 0; i < 100; i++){
         points.push({location: new google.maps.LatLng(lat + (Math.random() * radius) - (radius/2),
-            lng + (Math.random() * radius * 2) - (radius/2)), weight: (Math.random() * 1000000000)})
+            lng + (Math.random() * radius * 2) - (radius/2)), weight: (Math.random() * 1023 * sensorMultiplier)})
         // x = (yorkx + radius * (Math.random() * 100) * Math.cos(2 * Math.PI * 3 *i / Math.random()));
         // y = (yorky + (radius * 2 * (Math.random() * 100)) * Math.sin(2 * Math.PI * 3 * i / Math.random()));
         // points.push({location: new google.maps.LatLng(x, y), weight: i*i*i})
@@ -312,14 +334,30 @@ function drawCircle() {
     return points;
 }
 
-$("#coButton").click(function () {
-    map.setCenter(new google.maps.LatLng(yorkx, yorky), 5);
+// $("#coButton").click(function () {
+//     map.setCenter(new google.maps.LatLng(yorkx, yorky), 5);
+//     heatmap.setMap(null);
+//     heatmap = new google.maps.visualization.HeatmapLayer({
+//         data: drawCircle(),
+//         map: map
+//     });
+// });
+
+$(".jpButton").click(function () {
+    map.setCenter(new google.maps.LatLng(bbx, bby), 5);
     heatmap.setMap(null);
+    var points = [];
+    points.push.apply(points, addCluster(bbx, bby));
+    points.push.apply(points, addCluster(bbx + 0.01, bby + 0.02));
+    points.push.apply(points, addCluster(bbx - 0.01, bby - 0.01));
+    pointsGlobal = points;
     heatmap = new google.maps.visualization.HeatmapLayer({
-        data: drawCircle(),
+        data: points,
         map: map
     });
+    // jashifyHeatmap();
 });
+
 
 $("#methaneButton").click(function () {
     map.setCenter(new google.maps.LatLng(bbx, bby), 5);
@@ -333,6 +371,7 @@ $("#methaneButton").click(function () {
         data: points,
         map: map
     });
+    // jashifyHeatmap();
 });
 
 function getUrlVars()
@@ -346,4 +385,32 @@ function getUrlVars()
         vars[hash[0]] = hash[1];
     }
     return vars;
+}
+
+function jashifyHeatmap(){
+    var dataGreen = [];
+    var dataRed = [];
+    var threshold = 800 * sensorMultiplier;
+
+    for (var i = 0; i < pointsGlobal.length; i++){
+        if (pointsGlobal[i] < threshold){
+            dataGreen.push(pointsGlobal[i]);
+        }
+        else{
+            dataRed.push(pointsGlobal[i]);
+        }
+    }
+    heatmap.setMap(null);
+    heatmap = new google.maps.visualization.HeatmapLayer({
+        data: dataGreen,
+        map: map
+    });
+
+    heatmaptwo.setMap(null);
+    heatmaptwo = new google.maps.visualization.HeatmapLayer({
+        data: dataGreen,
+        map: map
+    });
+
+    changeGradient();
 }
