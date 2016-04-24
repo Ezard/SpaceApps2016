@@ -3,8 +3,7 @@ var DATABASE_ENABLE = true;
 var express = require('express');
 var exphbs = require('express-handlebars');
 var mysql;
-if(DATABASE_ENABLE)
-{
+if (DATABASE_ENABLE) {
     mysql = require('mysql');
 }
 
@@ -13,8 +12,7 @@ var bodyParser = require('body-parser');
 var config = require('./config');
 var con;
 
-if (DATABASE_ENABLE)
-{
+if (DATABASE_ENABLE) {
     con = mysql.createConnection({
         host: 'localhost',
         user: 'root',
@@ -67,16 +65,13 @@ app.get('/journeyplanner', function (req, res) {
 });
 
 app.get('/map/:type', function (req, res) {
-    if(DATABASE_ENABLE)
-    {
+    if (DATABASE_ENABLE) {
         var sql = mysql.format("SELECT timestamp, latitude, longitude, value FROM measurements m LEFT JOIN measurement_types mt ON m.type=mt.id WHERE name=? AND latitude != 0 AND longitude != 0", [req.params.type.toUpperCase()]);
         con.query(sql, function (error, results, fields) {
-            res.render('map', {data: JSON.stringify(results).replace(/&quot;/g, '\\"')});
+            res.render('map', {data: JSON.stringify(results)});
             //res.render("map")
         });
-    }
-    else
-    {
+    } else {
         res.render("map")
     }
 });
