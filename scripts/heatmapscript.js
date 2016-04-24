@@ -76,11 +76,11 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
     var waypointsBelow = [];
     var waypointsAboveDistance = 0;
     var waypointsBelowDistance = 0;
-    var threshold = 0.01;
+    // var threshold = 0.5;
+    threshold = (distance/(5));
     for (var i = 0; i < steps; i++){
-
-        var newLngAbove = start.lng() - (lngDistance * 1 * i/steps);
-        var newLatAbove = start.lat() - (latDistance * 1 * i/steps);
+        var newLngAbove = start.lng() - (lngDistance * i/steps);
+        var newLatAbove = start.lat() - (latDistance * i/steps);
         var newLngBelow = newLngAbove;
         var newLatBelow = newLatBelow;
 
@@ -120,52 +120,104 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
         }
 
         waypointsAbove.push({location: new google.maps.LatLng(newLatAbove, newLngAbove),stopover: false});
-        waypointsBelow.push({location: new google.maps.LatLng(newLatBelow, newLngBelow),stopover: false})
+        waypointsBelow.push({location: new google.maps.LatLng(newLatBelow, newLngBelow),stopover: false});
+    }
+
+    if (waypointsAbove.length > 8){
+        waypointsAbove = waypointsAbove.slice(0, 7)
+    }
+    if (waypointsBelow.length > 8){
+        waypointsBelow = waypointsBelow.slice(0, 7)
+    }
+
+    for (i = 0; i < waypointsAbove.length - 1; i++){
+        var w1 = waypointsAbove[i];
+        var w2 = waypointsAbove[i+1];
+        waypointsAboveDistance += calculateDistance(w1.lat, w2.lat, w1.lng, w2.lng);
+    }
+
+    for (i = 0; i < waypointsBelow.length - 1; i++){
+        var w1 = waypointsBelow[i];
+        var w2 = waypointsBelow[i+1];
+        waypointsBelowDistance += calculateDistance(w1.lat, w2.lat, w1.lng, w2.lng);
+    }
+
+    var waypoints;
+    if (waypointsAboveDistance > waypointsBelowDistance){
+        waypoints = waypointsBelow;
+    }
+    else{
+        waypoints = waypointsAbove;
     }
 
     // alert(waypointsAbove.length + " " + waypointsBelow.length);
     var snapRequest = "https://roads.googleapis.com/v1/snapToRoads?path=";
 
-    for (i = 0; i < waypointsAbove.length; i++){
-        snapRequest += waypointsAbove[i].location.lat().toString() + ",";
-        snapRequest += waypointsAbove[i].location.lng().toString();
-        if (i != waypointsAbove.length - 1){
+    for (i = 0; i < waypoints.length; i++){
+        snapRequest += waypoints[i].location.lat().toString() + ",";
+        snapRequest += waypoints[i].location.lng().toString();
+        if (i != waypoints.length - 1){
             snapRequest += "|";
         }
     }
     snapRequest += "&interpolate=true&key=AIzaSyAwveoqN8yTd5-6N1XfgcSZ8R1g_P8YOdw";
 
-    $.ajax({
-            method: "GET",
-            url: snapRequest
-        })
-        .success(function( msg ) {
-            // alert(JSON.stringify(msg));
-            for (var i = 0; i < msg.snappedPoints.length; i++){
-                waypointsAbove[i] = {location: new google.maps.LatLng(msg.snappedPoints[i].location.latitude,
-                    msg.snappedPoints[i].location.longitude),stopover: false};
-                // alert(JSON.stringify(msg.snappedPoints[i].location))
-            }
-            var options = {
-                origin: startMarker.getPosition(),
-                destination: endMarker.getPosition(),
-                travelMode: google.maps.TravelMode.WALKING
-            }
-            if(!waypointsAbove.length==0){
-                options.waypoints = waypointsAbove;
-            }
-            directionsService.route(options, function(response, status) {
-                if (status === google.maps.DirectionsStatus.OK) {
-                    directionsDisplay.setDirections(response);
-                } else {
-                    window.alert('Directions request failed due to ' + status);
+    if (waypoints.length > 0) {
+        $.ajax({
+                method: "GET",
+                url: snapRequest
+            })
+            .success(function (msg) {
+                // alert(JSON.stringify(msg));
+                for (var i = 0; i < msg.snappedPoints.length; i++) {
+                    waypoints[i] = {
+                        location: new google.maps.LatLng(msg.snappedPoints[i].location.latitude,
+                            msg.snappedPoints[i].location.longitude), stopover: false
+                    };
+                    // alert(JSON.stringify(msg.snappedPoints[i].location))
                 }
-            });
-        }).fail(function() {
-        alert("error");
-    });
+                var options = {
+                    origin: startMarker.getPosition(),
+                    destination: endMarker.getPosition(),
+                    travelMode: google.maps.TravelMode.WALKING
+                };
+                if (waypoints.length > 8) {
+                    waypoints = waypoints.slice(0, 7);
+                }
+                options.waypoints = waypoints;
+                directionsService.route(options, function (response, status) {
+                    if (status === google.maps.DirectionsStatus.OK) {
+                        directionsDisplay.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                });
+            }).fail(function () {
+            alert("error");
+        });
+    }
+    else{
+        directionsService.route({
+            origin: startMarker.getPosition(),
+            destination: endMarker.getPosition(),
+            travelMode: google.maps.TravelMode.WALKING
+        }, function (response, status) {
+            if (status === google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    }
 
-    return waypointsAbove;
+    return waypoints;
+}
+
+function calculateDistance(lat1, lat2, lng1, lng2){
+    var latDist = lat1 - lat2;
+    var lngDist = lng1 - lng2;
+    var distance = Math.sqrt((latDist*latDist)+(lngDist*lngDist));
+    return distance;
 }
 
 function changeGradient() {
@@ -208,7 +260,7 @@ function getPoints() {
 
 function addCluster(lat, lng){
     var points = [];
-    var radius = 0.01;
+    var radius = 0.05;
     var x, y;
 
     for (var i = 0; i < 100; i++){
@@ -224,13 +276,13 @@ function addCluster(lat, lng){
 
 function drawCircle() {
     var points = [];
-    var steps = 1000;
+    var stepps = 1000;
     var radius = 0.01;
 
     var x, y;
-    for (var i = 0; i < steps; i++) {
-        x = (yorkx + radius * (i / 100) * Math.cos(2 * Math.PI * 3 *i / steps));
-        y = (yorky + (radius * 2 * (i / 100)) * Math.sin(2 * Math.PI * 3 * i / steps));
+    for (var i = 0; i < stepps; i++) {
+        x = (yorkx + radius * (i / 100) * Math.cos(2 * Math.PI * 3 *i / stepps));
+        y = (yorky + (radius * 2 * (i / 100)) * Math.sin(2 * Math.PI * 3 * i / stepps));
         points.push({location: new google.maps.LatLng(x, y), weight: i*i*i})
     }
     pointsGlobal = points;
