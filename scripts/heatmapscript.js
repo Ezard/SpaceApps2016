@@ -23,7 +23,7 @@ function initheatMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
         center: {lat: bbx, lng: bby},
-        mapTypeId: google.maps.MapTypeId.MAP
+        mapTypeId: google.maps.MapTypeId.MAPS
     });
     directionsDisplay.setMap(map);
 
