@@ -53,6 +53,14 @@ app.get('/journeyplanner', function (req, res) {
     res.render('heatmap');
 });
 
+app.get('/map/:type', function (req, res) {
+    var sql = mysql.format("SELECT latitude, longitude, value FROM measurements m LEFT JOIN measurement_types mt ON m.type=mt.id WHERE name=?", [req.params.type]);
+    con.query(sql, function (error, results, fields) {
+        res.set("Content-Type", "application/json");
+        res.end(JSON.stringify(results));
+    });
+});
+
 app.post('/api/measurements', function (req, res) {
     var data = req.body;
     for (var i = 0; i < data.measurements.length; i++) {
