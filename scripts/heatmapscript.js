@@ -21,7 +21,7 @@ function initheatMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
         center: {lat: bbx, lng: bby},
-        mapTypeId: google.maps.MapTypeId.SATELLITE
+        mapTypeId: google.maps.MapTypeId.MAP
     });
     directionsDisplay.setMap(map);
 
@@ -60,6 +60,22 @@ function initheatMap() {
         );
     });
 
+    if (getUrlVars().hasOwnProperty("latstart") && getUrlVars().hasOwnProperty("lngstart") &&
+        getUrlVars().hasOwnProperty("latend") && getUrlVars().hasOwnProperty("lngend")){
+        startMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(getUrlVars()["latstart"], getUrlVars()["lngstart"]),
+            map: map,
+            draggable: true
+        });
+        endMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(getUrlVars()["latend"], getUrlVars()["lngend"]),
+            map: map,
+            draggable: true
+        });
+        calculateWaypoints(startMarker.getPosition(), endMarker.getPosition(),
+            directionsService, directionsDisplay);
+    }
+
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
@@ -71,6 +87,7 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
     var latDistance = start.lat() - end.lat();
     var distance = Math.sqrt((latDistance*latDistance) + (lngDistance*lngDistance));
     var steps = Math.min(8, Math.floor(distance/0.025));
+    // var steps = 8;
     console.log(steps);
     var waypointsAbove = [];
     var waypointsBelow = [];
@@ -175,7 +192,6 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
                 url: snapRequest
             })
             .success(function (msg) {
-                // alert(JSON.stringify(msg));
                 for (var i = 0; i < msg.snappedPoints.length; i++) {
                     waypoints[i] = {
                         location: new google.maps.LatLng(msg.snappedPoints[i].location.latitude,
@@ -196,11 +212,11 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
                     if (status === google.maps.DirectionsStatus.OK) {
                         directionsDisplay.setDirections(response);
                     } else {
-                        window.alert('Directions request failed due to ' + status);
+                        // window.alert('Directions request failed due to ' + status);
                     }
                 });
             }).fail(function () {
-            alert("error");
+            // alert("error");
         });
     }
     else{
@@ -212,7 +228,7 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
             if (status === google.maps.DirectionsStatus.OK) {
                 directionsDisplay.setDirections(response);
             } else {
-                window.alert('Directions request failed due to ' + status);
+                // window.alert('Directions request failed due to ' + status);
             }
         });
     }
@@ -317,3 +333,16 @@ $("#methaneButton").click(function () {
         map: map
     });
 });
+
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
