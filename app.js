@@ -1,11 +1,11 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
-//var mysql = require('mysql');
+var mysql = require('mysql');
 var bodyParser = require('body-parser');
 
 var config = require('./config');
 
-/*var con = mysql.createConnection({
+var con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'runciman',
@@ -13,7 +13,7 @@ var config = require('./config');
 });
 setTimeout(function () {
     con.connect();
-}, 1000);*/
+}, 1000);
 
 var app = express();
 
@@ -43,6 +43,7 @@ app.get('/signup', function (req, res) {
 
 app.get('/alerts', function (req, res) {
     res.render('alerts');
+});
 
 app.get('/symptoms', function (req, res) {
     res.render('symptoms');
