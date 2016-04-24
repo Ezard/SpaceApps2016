@@ -1,3 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{type}} Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.0.min.js"></script>
+<script src = "../scripts/bootstrap.js"></script>
+<link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwveoqN8yTd5-6N1XfgcSZ8R1g_P8YOdw&callback=initheatMap&libraries=visualization" async defer></script>
+<body>
+<div id="map"></div>
+
 <script>
+    var yorkx = 53.946815;
+    var yorky = -1.030851;
+
     var data = {{{data}}};
+    //var data = [{"timestamp":1461438326,"latitude":53.9473,"longitude":-1.02946,"value":299},{"timestamp":1461438327,"latitude":53.9473,"longitude":-1.02943,"value":311},{"timestamp":1461438328,"latitude":53.9473,"longitude":-1.02941,"value":316},{"timestamp":1461438330,"latitude":53.9473,"longitude":-1.0294,"value":299},{"timestamp":1461438331,"latitude":53.9473,"longitude":-1.0294,"value":289},{"timestamp":1461438332,"latitude":53.9473,"longitude":-1.0294,"value":285},{"timestamp":1461438333,"latitude":53.9473,"longitude":-1.02939,"value":276},{"timestamp":1461438336,"latitude":53.9473,"longitude":-1.02937,"value":267},{"timestamp":1461438337,"latitude":53.9474,"longitude":-1.02936,"value":271},{"timestamp":1461438338,"latitude":53.9474,"longitude":-1.02937,"value":272},{"timestamp":1461438340,"latitude":53.9474,"longitude":-1.02936,"value":277},{"timestamp":1461438342,"latitude":53.9474,"longitude":-1.02936,"value":274},{"timestamp":1461438343,"latitude":53.9474,"longitude":-1.02936,"value":279},{"timestamp":1461438344,"latitude":53.9476,"longitude":-1.02921,"value":277},{"timestamp":1461438345,"latitude":53.9476,"longitude":-1.02921,"value":280},{"timestamp":1461438347,"latitude":53.9476,"longitude":-1.0292,"value":286},{"timestamp":1461438348,"latitude":53.9476,"longitude":-1.0292,"value":221},{"timestamp":1461438349,"latitude":53.9476,"longitude":-1.0292,"value":200},{"timestamp":1461438350,"latitude":53.9476,"longitude":-1.02919,"value":288},{"timestamp":1461438352,"latitude":53.9476,"longitude":-1.02919,"value":192},{"timestamp":1461438353,"latitude":53.9476,"longitude":-1.02918,"value":291},{"timestamp":1461438354,"latitude":53.9476,"longitude":-1.02918,"value":290},{"timestamp":1461438356,"latitude":53.9476,"longitude":-1.02917,"value":293},{"timestamp":1461438360,"latitude":53.9476,"longitude":-1.02917,"value":294},{"timestamp":1461438366,"latitude":53.9477,"longitude":-1.02917,"value":292},{"timestamp":1461438367,"latitude":53.9477,"longitude":-1.02917,"value":286},{"timestamp":1461438908,"latitude":53.9477,"longitude":-1.02995,"value":250},{"timestamp":1461438909,"latitude":53.9477,"longitude":-1.02995,"value":335},{"timestamp":1461438911,"latitude":53.9477,"longitude":-1.02995,"value":250},{"timestamp":1461438912,"latitude":53.9477,"longitude":-1.02996,"value":350},{"timestamp":1461438913,"latitude":53.9477,"longitude":-1.02996,"value":349},{"timestamp":1461438917,"latitude":53.9477,"longitude":-1.02996,"value":283},{"timestamp":1461438918,"latitude":53.9477,"longitude":-1.02996,"value":349},{"timestamp":1461438920,"latitude":53.9477,"longitude":-1.02996,"value":347},{"timestamp":1461438921,"latitude":53.9477,"longitude":-1.02996,"value":345},{"timestamp":1461438923,"latitude":53.9477,"longitude":-1.02996,"value":346},{"timestamp":1461438924,"latitude":53.9477,"longitude":-1.02996,"value":347},{"timestamp":1461438926,"latitude":53.9477,"longitude":-1.02997,"value":346},{"timestamp":1461438927,"latitude":53.9477,"longitude":-1.02997,"value":346},{"timestamp":1461438928,"latitude":53.9477,"longitude":-1.02997,"value":344}];
+
+    points = []
+    
+
+    function initheatMap() {
+        $.each(data, function()
+        {
+            points.push({
+                    location: new google.maps.LatLng(this.latitude, this.longitude),
+                    weight: this.value
+                });
+        });
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: {lat: yorkx, lng: yorky},
+            mapTypeId: google.maps.MapTypeId.SATELLITE
+        });
+        directionsDisplay.setMap(map);
+
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: points,
+            map: map
+        });
+    }
+
+    function addCluster(lat, lng)
+    {
+        var points = [];
+        var radius = 0.05;
+        var x, y;
+
+        for (var i = 0; i < 100; i++){
+            points.push({location: new google.maps.LatLng(lat + (Math.random() * radius) - (radius/2),
+                lng + (Math.random() * radius * 2) - (radius/2)), weight: (Math.random() * 1000000000)})
+        }
+        pointsGlobal = points;
+        return points;
+    }
 </script>
+</body>
+</html>

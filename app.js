@@ -68,8 +68,7 @@ app.get('/map/:type', function (req, res) {
     if (DATABASE_ENABLE) {
         var sql = mysql.format("SELECT timestamp, latitude, longitude, value FROM measurements m LEFT JOIN measurement_types mt ON m.type=mt.id WHERE name=? AND latitude != 0 AND longitude != 0", [req.params.type.toUpperCase()]);
         con.query(sql, function (error, results, fields) {
-            res.render('map', {data: JSON.stringify(results)});
-            //res.render("map")
+            res.render('map', {type: req.params.type, data: JSON.stringify(results)});
         });
     } else {
         res.render("map")
