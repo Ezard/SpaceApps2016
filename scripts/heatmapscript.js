@@ -62,6 +62,7 @@ function initheatMap() {
 
     if (getUrlVars().hasOwnProperty("latstart") && getUrlVars().hasOwnProperty("lngstart") &&
         getUrlVars().hasOwnProperty("latend") && getUrlVars().hasOwnProperty("lngend")){
+        startMarker.setMap(null);
         startMarker = new google.maps.Marker({
             position: new google.maps.LatLng(getUrlVars()["latstart"], getUrlVars()["lngstart"]),
             map: map,
