@@ -47,11 +47,11 @@ app.get('/', function (req, res) {
                 con.query("SELECT value as temperature FROM measurements WHERE type=4 ORDER BY timestamp DESC LIMIT 1", function (error4, results4, fields4) {
                     con.query("SELECT value as humidity FROM measurements WHERE type=5 ORDER BY timestamp DESC LIMIT 1", function (error5, results5, fields5) {
                         var obj = {
-                            methane: results.methane,
-                            carbon_monoxide: results2.carbon_monoxide,
-                            air_quality: results3.air_quality,
-                            temperature: results4.temperature,
-                            humidity: results5.humidity
+                            methane: results[0].methane,
+                            carbon_monoxide: results2[0].carbon_monoxide,
+                            air_quality: results3[0].air_quality,
+                            temperature: results4[0].temperature,
+                            humidity: results5[0].humidity
                         };
                         console.log(obj);
                         res.render('index', obj);
