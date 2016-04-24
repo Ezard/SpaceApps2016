@@ -41,6 +41,15 @@ app.use('/images', express.static('images'));
 app.use('/scripts', express.static('scripts'));
 
 app.get('/', function (req, res) {
+    function getSql(type)
+    {
+        return "SELECT timestamp, latitude, longitude, value FROM measurements m LEFT JOIN measurement_types mt ON m.type=mt.id WHERE name=? AND latitude != 0 AND longitude != 0 AND type="+type;
+    }
+    var sql = mysql.format(getSql("METHANE"), [req.params.type.toUpperCase()]);
+    con.query(sql, function (error, results, fields) {
+            res.render('index', {data: JSON.stringify(results)});
+        });
+
     res.render('index');
 });
 
