@@ -210,8 +210,8 @@
             options.icon = "f18c";
             $("#pollen").circliful(options);
             options.text = "Air Quality";
-            options.foregroundColor = getColour(({{air_quality}} / 1023) * 100);
-            options.percent = ({{air_quality}} / 1023) * 100;
+            options.foregroundColor = getColour(({{air_quality}} / 100) * 100);
+            options.percent = ({{air_quality}} / 100) * 100;
             options.icon = "f299";
             $("#air_quality").circliful(options);
             options.text = "CO";
