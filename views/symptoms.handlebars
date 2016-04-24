@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>Login Screen</title>
     <script> src = "../scripts/bootstrap.js"</script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <!--<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
     <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-    <link rel="stylesheet" href="../css/symptoms.css">
+    <link rel="stylesheet" href="../css/loginpage.css">
 </head>
 <body>
 <div id="symptomsinput">
@@ -15,28 +15,21 @@
         <h1 class="text-center">Symptoms</h1>
     </div>
 
-    <div class="form-group center-block">
-        <label class="label-text" for="usr">Cough</label>
-        <input type="range" min="0" max="3">
+    <div class="btn btn-allergy btn-default center-block button">
+        Irritations of the eyes, nose and throat
     </div>
-    <div class="form-group center-block">
-        <label class="label-text" for="usr">Itchy Eyes</label>
-        <input type="range" name="points" id="points" value="0" min="0" max="3">
+    <div class="btn btn-allergy btn-default center-block button">
+        Coughing
     </div>
-    <div class="form-group center-block">
-        <label class="label-text" for="usr">Breathing Difficulty</label>
-        <input type="range" name="points" id="points" value="0" min="0" max="3">
+    <div class="btn btn-allergy btn-default center-block button">
+        Chest Tightness
     </div>
-    <div class="form-group center-block">
-        <label class="label-text" for="usr">Cold</label>
-        <input type="range" name="points" id="points" value="0" min="0" max="3">
+    <div class="btn btn-allergy btn-default center-block button">
+        Shortness of breath
     </div>
-
-    <div class="form-group center-block">
-        <label class="label-text" for="usr">Increased Asthma</label>
-        <input type="range" name="points" id="points" value="0" min="0" max="3">
+    <div class="btn btn-allergy btn-default center-block button">
+        Heart palpitations
     </div>
-
 
     <a href="/">
         <div class="btn btn-primary center-block button">
@@ -46,5 +39,12 @@
 
 
 </div>
+
+<script type="text/javascript">
+    $(".btn-allergy").on("click", function()
+    {
+        $(this).toggleClass("active");
+    });
+</script>
 </body>
 </html>
