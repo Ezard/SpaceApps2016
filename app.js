@@ -56,7 +56,7 @@ app.get('/journeyplanner', function (req, res) {
 app.get('/map/:type', function (req, res) {
     var sql = mysql.format("SELECT latitude, longitude, value FROM measurements m LEFT JOIN measurement_types mt ON m.type=mt.id WHERE name=? AND latitude != 0 AND longitude != 0", [req.params.type.toUpperCase()]);
     con.query(sql, function (error, results, fields) {
-        res.render('map', {data: unescape(JSON.stringify(results))});
+        res.render('map', {data: JSON.stringify(results).replace(/&quot;/g, '\\"')});
     });
 });
 
