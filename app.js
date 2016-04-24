@@ -1,19 +1,31 @@
+var DATABASE_ENABLE = true;
+
 var express = require('express');
 var exphbs = require('express-handlebars');
-var mysql = require('mysql');
+var mysql;
+if(DATABASE_ENABLE)
+{
+    mysql = require('mysql');
+}
+
 var bodyParser = require('body-parser');
 
 var config = require('./config');
+var con;
 
-var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'runciman',
-    database: 'spaceapps'
-});
+if (DATABASE_ENABLE)
+{
+    con = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'runciman',
+        database: 'spaceapps'
+    });
+}
+
 setTimeout(function () {
     con.connect();
-}, 1000);
+}, 1000);*/
 
 var app = express();
 
@@ -54,10 +66,18 @@ app.get('/journeyplanner', function (req, res) {
 });
 
 app.get('/map/:type', function (req, res) {
-    var sql = mysql.format("SELECT latitude, longitude, value FROM measurements m LEFT JOIN measurement_types mt ON m.type=mt.id WHERE name=? AND latitude != 0 AND longitude != 0", [req.params.type.toUpperCase()]);
-    con.query(sql, function (error, results, fields) {
-        res.render('map', {data: JSON.stringify(results).replace(/&quot;/g, '\\"')});
-    });
+    if(DATABASE_ENABLE)
+    {
+        var sql = mysql.format("SELECT timestamp, latitude, longitude, value FROM measurements m LEFT JOIN measurement_types mt ON m.type=mt.id WHERE name=? AND latitude != 0 AND longitude != 0", [req.params.type.toUpperCase()]);
+        con.query(sql, function (error, results, fields) {
+            res.render('map', {data: JSON.stringify(results).replace(/&quot;/g, '\\"')});
+            //res.render("map")
+        });
+    }
+    else
+    {
+        res.render("map")
+    }
 });
 
 app.post('/api/measurements', function (req, res) {
