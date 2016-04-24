@@ -77,12 +77,13 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
     var waypointsAboveDistance = 0;
     var waypointsBelowDistance = 0;
     // var threshold = 0.5;
-    threshold = (distance/(5));
+    var threshold = (distance/(10));
     for (var i = 0; i < steps; i++){
         var newLngAbove = start.lng() - (lngDistance * i/steps);
         var newLatAbove = start.lat() - (latDistance * i/steps);
         var newLngBelow = newLngAbove;
-        var newLatBelow = newLatBelow;
+        var newLatBelow = newLatAbove;
+        var increment = distance / 100;
 
 
         for (var j = 0; j < pointsGlobal.length; j++){
@@ -92,11 +93,13 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
             var hDistance = Math.sqrt((hLatDistance*hLatDistance) + (hLngDistance*hLngDistance));
             if (hDistance < threshold){
                 // newLng += Math.random() - 0.0005;
-                if (lngDistance < latDistance) {
-                    newLatAbove += distance / 100;
+                if (lngDistance < latDistance || true) {
+                    newLatAbove += increment;
+                    console.log("push sideways");
                 }
                 else {
-                    newLngAbove += distance / 100;
+                    newLngAbove += increment;
+                    console.log("push up");
                 }
                 j = 0;
             }
@@ -109,11 +112,13 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
             hDistance = Math.sqrt((hLatDistance*hLatDistance) + (hLngDistance*hLngDistance));
             if (hDistance < threshold){
                 // newLng += Math.random() - 0.0005;
-                if (lngDistance < latDistance) {
-                    newLatBelow -= distance / 100;
+                if (lngDistance < latDistance || true) {
+                    newLatBelow -= increment;
+                    console.log("push sideways");
                 }
                 else {
-                    newLngBelow -= distance / 100;
+                    newLngBelow -= increment;
+                    console.log("push down");
                 }
                 j = 0;
             }
@@ -131,15 +136,17 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
     }
 
     for (i = 0; i < waypointsAbove.length - 1; i++){
-        var w1 = waypointsAbove[i];
-        var w2 = waypointsAbove[i+1];
-        waypointsAboveDistance += calculateDistance(w1.lat, w2.lat, w1.lng, w2.lng);
+        var w1 = waypointsAbove[i].location;
+        var w2 = waypointsAbove[i+1].location;
+
+        waypointsAboveDistance += calculateDistance(w1.lat(), w2.lat(), w1.lng(), w2.lng());
     }
 
     for (i = 0; i < waypointsBelow.length - 1; i++){
-        var w1 = waypointsBelow[i];
-        var w2 = waypointsBelow[i+1];
-        waypointsBelowDistance += calculateDistance(w1.lat, w2.lat, w1.lng, w2.lng);
+        var w1 = waypointsBelow[i].location;
+        var w2 = waypointsBelow[i+1].location;
+        waypointsBelowDistance += calculateDistance(w1.lat(), w2.lat(), w1.lng(), w2.lng());
+        console.log(JSON.stringify(waypointsBelow[i]));
     }
 
     var waypoints;
@@ -172,7 +179,7 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
                 for (var i = 0; i < msg.snappedPoints.length; i++) {
                     waypoints[i] = {
                         location: new google.maps.LatLng(msg.snappedPoints[i].location.latitude,
-                            msg.snappedPoints[i].location.longitude), stopover: false
+                            msg.snappedPoints[i].location.longitude), stopover: true
                     };
                     // alert(JSON.stringify(msg.snappedPoints[i].location))
                 }
@@ -216,8 +223,7 @@ function calculateWaypoints(start, end, directionsService, directionsDisplay){
 function calculateDistance(lat1, lat2, lng1, lng2){
     var latDist = lat1 - lat2;
     var lngDist = lng1 - lng2;
-    var distance = Math.sqrt((latDist*latDist)+(lngDist*lngDist));
-    return distance;
+    return Math.sqrt((latDist*latDist)+(lngDist*lngDist));
 }
 
 function changeGradient() {
@@ -305,6 +311,7 @@ $("#methaneButton").click(function () {
     points.push.apply(points, addCluster(bbx, bby));
     points.push.apply(points, addCluster(bbx + 0.01, bby + 0.02));
     points.push.apply(points, addCluster(bbx - 0.01, bby - 0.01));
+    pointsGlobal = points;
     heatmap = new google.maps.visualization.HeatmapLayer({
         data: points,
         map: map
