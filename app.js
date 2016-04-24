@@ -1,11 +1,11 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
-//var mysql = require('mysql');
+var mysql = require('mysql');
 var bodyParser = require('body-parser');
 
 var config = require('./config');
 
-/*var con = mysql.createConnection({
+var con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'runciman',
@@ -13,7 +13,7 @@ var config = require('./config');
 });
 setTimeout(function () {
     con.connect();
-}, 1000);*/
+}, 1000);
 
 var app = express();
 
@@ -43,9 +43,21 @@ app.get('/signup', function (req, res) {
 
 app.get('/alerts', function (req, res) {
     res.render('alerts');
+});
 
 app.get('/symptoms', function (req, res) {
     res.render('symptoms');
+});
+
+app.get('/journeyplanner', function (req, res) {
+    res.render('heatmap');
+});
+
+app.get('/map/:type', function (req, res) {
+    var sql = mysql.format("SELECT latitude, longitude, value FROM measurements m LEFT JOIN measurement_types mt ON m.type=mt.id WHERE name=? AND latitude != 0 AND longitude != 0", [req.params.type.toUpperCase()]);
+    con.query(sql, function (error, results, fields) {
+        res.render('map', {data: JSON.stringify(results).replace(/&quot;/g, '\\"')});
+    });
 });
 
 app.post('/api/measurements', function (req, res) {
