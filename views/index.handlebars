@@ -181,8 +181,6 @@
 
     <script>
 
-        var displayData = {{{data}}}
-
         var options = {
             animationStep: 5,
             foregroundBorderWidth: 5,
@@ -203,7 +201,7 @@
 
             options.text = "Methane";
             options.foregroundColor = getColour(percentage.methane);
-            options.percent = percentage.methane;
+            options.percent = {{methane}};
             options.icon = "f0c2";
             $("#methane").circliful(options);
             options.text = "Pollen";
@@ -230,6 +228,7 @@
             options.foregroundColor = getColour(percentage.temperature);
             options.percent = percentage.temperature;
             options.icon = "f0e9";
+            options.unit = "°C";
             $("#temperature").circliful(options);
 
             /*setTimeout(function () {
