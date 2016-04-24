@@ -49,6 +49,10 @@ app.get('/symptoms', function (req, res) {
     res.render('symptoms');
 });
 
+app.get('/journeyplanner', function (req, res) {
+    res.render('heatmap');
+});
+
 app.post('/api/measurements', function (req, res) {
     var data = req.body;
     for (var i = 0; i < data.measurements.length; i++) {
